@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Atelier DC4 EJE</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7B4DFF">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Atelier DC4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
@@ -225,5 +230,6 @@ cp.onclick=async()=>{try{await navigator.clipboard.writeText(out.textContent);cp
 clr.onclick=()=>{Q.forEach(q=>document.getElementById('q_'+q[0]).value='');qv={};store.set('dc4qq',qv);out.textContent='Le paragraphe apparaîtra ici.'};
 }
 </script>
+<script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){navigator.serviceWorker.register("sw.js").catch(()=>{})}</script>
 </body>
 </html>
