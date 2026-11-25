@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier DC4 EJE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: atelier pédagogique, énergique, clair, pour étudiants EJE de 3e année
+   IDEA: la copie d'examen surlignée au Stabilo, étape par étape
+   PICTURE: une feuille de copie avec des traits de surligneur, et une frise des 4 heures
+   COLOUR and TYPE: fond blanc, encre violet nuit, cinq surligneurs vifs ; Fredoka + Nunito
+   LAYOUT: bandeau-titre + copie, frise du temps, stepper des 9 critères, outils (Stabilo, QQOQCP, intra/inter/extra) */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#14122a);--ink:light-dark(#1d1b3a,#f3f1ff);--soft:light-dark(#5b5880,#b9b5dc);--card:light-dark(#f6f5ff,#1f1c3d);--line:light-dark(#e3e0f5,#34305c);
+--jaune:#ffe500;--vert:#35e07a;--rose:#ff4fa3;--bleu:#2fb8ff;--orange:#ff8a1f;--violet:#7b4dff;--hl:light-dark(1,.85)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Fredoka,Nunito,sans-serif;line-height:1.1;text-wrap:balance;margin:0 0 .4em}
+h1{font-size:clamp(32px,5vw,52px)}h2{font-size:clamp(26px,3.4vw,36px)}h3{font-size:21px}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}.wrap{max-width:1240px;margin:auto}
+.hero{background:var(--violet);color:#fff}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero p{font-size:17px;max-width:60ch;opacity:.95}
+.mark{background:linear-gradient(transparent 55%,var(--jaune) 55%);color:inherit;padding:0 .1em}
+.sheet{background:#fff;color:#1d1b3a;border-radius:14px;padding:26px 24px;box-shadow:0 18px 0 -6px #4a2bc4,0 30px 50px rgba(0,0,0,.25);transform:rotate(-1.5deg)}
+.sheet .row{height:12px;border-radius:6px;background:#e9e7f7;margin:11px 0}
+.sheet .row.h{height:16px}.sheet .t{font:600 14px Fredoka,sans-serif;margin:0 0 6px}
+.nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:2px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:8px max(5vw,16px)}
+.nav a{flex:none;color:var(--ink);text-decoration:none;font-weight:800;padding:10px 14px;border-radius:999px;background:var(--card)}
+.nav a:hover,.nav a:focus-visible{background:var(--jaune);color:#1d1b3a;outline:none}
+.time{display:flex;border-radius:12px;overflow:hidden;margin:18px 0 8px}
+.time div{padding:12px 8px;color:#1d1b3a;font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--soft)}
+.legend span{white-space:nowrap}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin:18px 0}
+.steps button{font:700 15px Fredoka,sans-serif;min-height:74px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;padding:8px;text-align:left}
+.steps button b{display:block;font-size:26px;line-height:1}
+.steps button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steps button.done::after{content:" ✓";color:var(--vert)}
+.panel{border-radius:18px;border:2px solid var(--line);padding:clamp(18px,3vw,32px);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px}
+.tag{display:inline-block;font-weight:800;font-size:13px;padding:3px 10px;border-radius:999px;color:#1d1b3a;margin-bottom:10px}
+.check label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.check input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--violet)}
+.box{background:var(--card);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.box.warn{border-left:6px solid var(--rose)}.box.tip{border-left:6px solid var(--vert)}.box.ref{border-left:6px solid var(--bleu)}
+.bar{height:14px;background:var(--line);border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--vert),var(--jaune));width:0;transition:width .4s}
+.stabilo{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.stabilo div{border-radius:16px;padding:16px;background:var(--card);border:2px solid var(--line)}
+.stabilo .pen{height:22px;border-radius:4px 14px 14px 4px;margin-bottom:10px;opacity:var(--hl)}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cols>div{border-radius:16px;padding:18px;color:#1d1b3a}
+.cols ul{padding-left:18px;margin:8px 0}
+.q{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.q label{font-weight:800;font-size:14px;display:block}
+.q textarea,.free textarea{width:100%;font:16px Nunito,sans-serif;border:2px solid var(--line);border-radius:12px;padding:10px;background:var(--bg);color:var(--ink);min-height:70px;resize:vertical}
+textarea:focus,select:focus,button:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+.out{background:var(--card);border-radius:14px;padding:18px;border:2px dashed var(--violet);white-space:pre-wrap;min-height:90px}
+.btn{font:700 16px Fredoka,sans-serif;min-height:44px;padding:8px 18px;border-radius:999px;border:0;background:var(--violet);color:#fff;cursor:pointer}
+.btn.alt{background:var(--card);color:var(--ink);border:2px solid var(--line)}
+.vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.vs>div{border-radius:16px;padding:18px;background:var(--card)}
+.vs .bad{border-top:8px solid var(--rose)}.vs .good{border-top:8px solid var(--vert)}
+select{font:16px Nunito,sans-serif;min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);padding:6px 10px}
+.small{font-size:14px;color:var(--soft)}
+footer{border-top:2px solid var(--line)}
+@media(max-width:860px){.hero .wrap,.panel,.vs{grid-template-columns:minmax(0,1fr)}.cols{grid-template-columns:minmax(0,1fr)}.sheet{transform:none}}
+@media(max-width:600px){.q{grid-template-columns:minmax(0,1fr)}.time div{font-size:11px;padding:10px 4px}}
+@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<header class="band hero">
+ <div class="wrap">
+  <div>
+   <h1>Réussir le devoir sur table du <span class="mark">DC4</span></h1>
+   <p>Outil d'atelier pour les étudiants EJE de 3e année. DC4 : dynamiques interinstitutionnelles, partenariats et réseaux. Neuf critères, une méthode, quatre heures.</p>
+   <p class="small" style="color:#e9e3ff">Épreuve écrite de 4 h en établissement de formation : mobiliser ses connaissances en politiques sociales et présenter une proposition d'action partenariale ou d'aide à la décision.</p>
+   <div style="margin-top:14px"><div class="bar" style="background:rgba(255,255,255,.25)"><i id="gbar"></i></div><p class="small" id="gtxt" style="color:#fff;margin:.4em 0 0">0 % des critères validés</p></div>
+  </div>
+  <div class="sheet" aria-hidden="true">
+   <p class="t">Copie : DC4 — Devoir sur table</p>
+   <div class="row h" style="width:60%;background:var(--violet);opacity:.35"></div>
+   <div class="row" style="width:92%"></div>
+   <div class="row" style="width:85%;background:var(--jaune)"></div>
+   <div class="row" style="width:70%"></div>
+   <div class="row" style="width:88%;background:var(--bleu);opacity:.7"></div>
+   <div class="row" style="width:76%;background:var(--vert)"></div>
+   <div class="row" style="width:94%"></div>
+   <div class="row" style="width:64%;background:var(--rose);opacity:.75"></div>
+   <div class="row" style="width:82%"></div>
+   <div class="row" style="width:90%;background:var(--orange);opacity:.8"></div>
+   <div class="row" style="width:55%"></div>
+  </div>
+ </div>
+</header>
+
+<nav class="nav" aria-label="Sections">
+ <a href="#criteres">9 critères</a><a href="#temps">Gestion du temps</a><a href="#trois">Intra · Inter · Extra</a><a href="#qqoqcp">QQOQCP</a><a href="#visible">Se rendre visible</a>
+</nav>
+
+<section class="band" id="temps"><div class="wrap">
+ <h2>Les 4 heures, minute par minute</h2>
+ <p>Proposition de découpage à adapter. L'essentiel : ne jamais rédiger avant d'avoir lu, surligné et mutualisé.</p>
+ <div class="time" id="timeline"></div>
+ <div class="legend" id="tlegend"></div>
+</div></section>
+
+<section class="band" id="criteres" style="padding-top:0"><div class="wrap">
+ <h2>Les 9 critères de l'atelier</h2>
+ <p>Cliquez sur un critère, lisez la fiche, cochez ce qui est acquis. La progression reste dans ce navigateur.</p>
+ <div class="steps" role="tablist" id="steps"></div>
+ <div class="panel" id="panel" role="tabpanel"></div>
+</div></section>
+
+
+<section class="band" id="trois"><div class="wrap">
+ <h2>Trois niveaux pour les propositions professionnelles</h2>
+ <p>Chaque proposition de la question 3 se situe à un niveau. Une bonne copie mobilise les trois et montre comment ils s'articulent.</p>
+ <div class="cols">
+  <div style="background:var(--jaune)"><h3>Intra-institutionnel</h3><p><b>Dans</b> la structure : équipe pluriprofessionnelle, direction, projet d'établissement, projet pédagogique.</p><ul><li>Réunion d'équipe pour co-construire un protocole</li><li>Temps d'analyse de la pratique</li><li>Fiche d'observation partagée</li><li>Référent·e d'un enfant ou d'une famille</li><li>Café des parents au sein de la structure</li></ul></div>
+  <div style="background:var(--vert)"><h3>Inter-institutionnel</h3><p><b>Entre</b> institutions partenaires, formalisé ou non : PMI, école, CAMSP, ASE, RPE, LAEP, pôle ressources handicap, commune.</p><ul><li>Convention de partenariat</li><li>Synthèse partagée avec la PMI</li><li>Passerelle crèche-école</li><li>Participation à un réseau ou une commission</li></ul></div>
+  <div style="background:var(--bleu)"><h3>Extra-institutionnel</h3><p><b>Hors</b> des murs : familles, CAF, territoire, associations, culture, habitants, réseau de quartier.</p><ul><li>Café des parents ouvert au quartier</li><li>Sortie à la médiathèque</li><li>Projet avec une association locale</li><li>Diagnostic de territoire, veille</li><li>Mobilisation de la CAF (financement, Convention territoriale globale)</li></ul></div>
+ </div>
+ <div class="box ref" style="margin-top:18px"><b>Lien avec le référentiel.</b> Le DC4 vise à connaître et analyser un environnement institutionnel et à s'y situer, à utiliser les ressources de l'environnement institutionnel et partenarial (politiques sociales, dispositifs), et à se positionner dans un travail partenarial. Les trois niveaux en sont la traduction concrète dans la copie.</div>
+</div></section>
+
+<section class="band" id="qqoqcp" style="background:var(--card)"><div class="wrap">
+ <h2>Générateur QQOQCP</h2>
+ <p>Remplissez les cases pour une proposition. L'outil assemble un paragraphe rédigé à la première personne, prêt à être retravaillé dans la question 3.</p>
+ <p><label for="niv"><b>Niveau de la proposition :</b></label> <select id="niv"><option>intra-institutionnel</option><option>inter-institutionnel</option><option>extra-institutionnel</option></select></p>
+ <div class="q" id="qq"></div>
+ <p style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px"><button class="btn" id="gen">Rédiger la proposition</button><button class="btn alt" id="ex">Charger un exemple</button><button class="btn alt" id="cp">Copier</button><button class="btn alt" id="clr">Effacer</button></p>
+ <div class="out" id="out" aria-live="polite">Le paragraphe apparaîtra ici.</div>
+</div></section>
+
+<section class="band" id="visible"><div class="wrap">
+ <h2>Se rendre visible sur le terrain</h2>
+ <p>Le correcteur doit voir une professionnelle ou un professionnel en action : qui fait quoi, avec qui, avec quels outils, et comment on vérifie que ça marche. Écrire « je », pas « on pourrait ».</p>
+ <div class="vs">
+  <div class="bad"><h3>Invisible</h3><p>« Il faudrait travailler en partenariat avec la PMI pour mieux accompagner la famille. »</p><p class="small">Pas d'auteur, pas d'action, pas d'outil, pas de calendrier, pas d'évaluation.</p></div>
+  <div class="good"><h3>Visible</h3><p>« En tant qu'EJE référente de Léo, je propose à la directrice de solliciter la puéricultrice de PMI du secteur pour une rencontre tripartite avec les parents, dans les quinze jours. Je prépare cette rencontre à partir de nos grilles d'observation des trois dernières semaines. Nous convenons ensemble d'objectifs et d'un point d'étape à un mois, consigné dans le dossier de l'enfant. »</p></div>
+ </div>
+ <div class="box tip" style="margin-top:18px"><b>Liste de contrôle avant de rendre.</b> Chaque proposition contient : un verbe d'action au présent ou au futur, mon rôle d'EJE, les partenaires nommés, un outil ou un support, une temporalité, un critère d'évaluation, et le lien avec un enjeu de la question 1.</div>
+</div></section>
+
+<footer class="band"><div class="wrap small">Atelier DC4 — DEEJE (arrêté du 22 août 2018). Outil de formation ; les exemples sont fictifs. <button class="btn alt" id="reset" style="margin-left:8px">Remettre la progression à zéro</button></div></footer>
+
+<script>
+{
+const C=['#ffe500','#35e07a','#ff4fa3','#2fb8ff','#ff8a1f','#b9a4ff'];
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+const T=[['Consigne + questions',15,5],['Lecture & Stabilo',45,0],['Mutualisation / plan',30,1],['Introduction',15,3],['Q1 Enjeux',35,0],['Q2 Acteurs & limites',35,2],['Q3 Positionnement',50,4],['Relecture',15,5]];
+timeline.innerHTML=T.map(t=>`<div style="flex:${t[1]};background:${C[t[2]]}" title="${t[0]} : ${t[1]} min">${t[1]}′</div>`).join('');
+tlegend.innerHTML=T.map(t=>`<span><b style="color:${C[t[2]]}">■</b> ${t[0]} — ${t[1]} min</span>`).join('');
+
+
+const S=[
+{t:'Prendre connaissance de la consigne',c:5,ref:'Comprendre la commande : c\'est la condition d\'une réponse pertinente.',
+ obj:'Lire la consigne générale mot à mot pour savoir ce qui est attendu : contexte, posture demandée (EJE en poste ? en stage ?), forme de l\'écrit, durée.',
+ how:['Lire la consigne deux fois, lentement','Souligner les verbes de consigne : analyser, identifier, proposer, argumenter','Repérer la posture imposée : « vous êtes EJE dans… »','Repérer la structure, le public, le territoire','Noter le temps et le nombre de pages attendus'],
+ warn:'Répondre à la question que l\'on aurait aimé avoir, et non à celle posée.',tip:'Reformuler la consigne en une phrase dans sa marge : « On me demande de… ».'},
+{t:'Prendre connaissance des questions',c:5,ref:'Q1 enjeux · Q2 acteurs et limites · Q3 positionnement professionnel.',
+ obj:'Lire les trois questions avant les documents pour lire le dossier avec une intention.',
+ how:['Q1 : quels sont les enjeux, et dans quel cadre légal ?','Q2 : quels acteurs, quels rôles, quelles limites ?','Q3 : quel positionnement et quelles propositions en tant qu\'EJE ?','Repérer les mots-clés de chaque question','Associer une couleur de Stabilo à chaque question'],
+ warn:'Mélanger enjeux et acteurs, ou rédiger la Q3 sans s\'appuyer sur Q1 et Q2.',tip:'Recopier les trois questions en haut du brouillon, avec leur couleur.'},
+{t:'Recueillir l\'information au Stabilo',c:0,ref:'Connaître et analyser un environnement institutionnel.',
+ obj:'Extraire des documents les éléments utiles à Q1 (enjeux, cadre légal) et Q2 (acteurs, limites), avec un code couleur constant.',
+ how:['1re lecture : survol, sans surligner','2e lecture : jaune = enjeux, bleu = cadre légal','vert = acteurs, rose = limites','orange = leviers pour Q3','Noter en marge : Doc n°, ligne'],
+ warn:'Tout surligner : la couleur ne trie plus rien.',tip:'Garder le même code couleur pour tous les documents, afin de retrouver l\'information en quelques secondes au moment de rédiger.'},
+{t:'Rédiger l\'introduction',c:3,ref:'Communication professionnelle écrite.',
+ obj:'Présenter le contexte et le thème de l\'épreuve en quelques lignes.',
+ how:['Accroche : un fait, un chiffre ou une évolution des politiques petite enfance','Contexte : structure, public, territoire de la situation','Thème et définition des notions clés (partenariat, réseau…)','Problématique ou question centrale','Annonce du plan en trois temps'],
+ warn:'Une introduction qui recopie le sujet ou qui donne déjà les réponses.',tip:'Rédiger l\'introduction au propre après la mutualisation, pas avant.'},
+{t:'Mutualiser : enjeux et cadre légal',c:0,ref:'Connaître les politiques sociales.',
+ obj:'Regrouper tout le jaune et le bleu pour construire la réponse à la Q1.',
+ how:['Lister les enjeux par destinataire : enfant, famille, équipe, institution, territoire','Rattacher chaque enjeu à un texte ou un dispositif','Hiérarchiser : du plus central au plus secondaire','Croiser avec ses connaissances de cours','Prévoir une phrase de transition vers Q2'],
+ warn:'Citer une loi sans dire ce qu\'elle change pour la situation.',tip:'Repères possibles : CIDE (1989), protection de l\'enfance (2007, 2016, 2022), loi handicap (2005), réforme des modes d\'accueil (2021) et Charte nationale de l\'accueil du jeune enfant, service public de la petite enfance (communes autorités organisatrices depuis 2025), CTG avec la CAF. À vérifier selon le sujet.'},
+{t:'Mutualiser : acteurs et limites',c:2,ref:'Utiliser les ressources de l\'environnement partenarial.',
+ obj:'Regrouper le vert et le rose pour construire la réponse à la Q2.',
+ how:['Tableau : acteur · mission · lien avec la situation · limite','Distinguer acteurs décideurs, financeurs, opérateurs','Faire une carte du réseau : qui travaille avec qui ?','Identifier les limites : institutionnelles, juridiques, humaines, matérielles','Nommer les limites de son propre rôle d\'EJE'],
+ warn:'Une liste d\'acteurs sans rôle ni lien entre eux.',tip:'Une limite bien nommée annonce souvent une proposition en Q3.'},
+{t:'Propositions : intra, inter, extra',c:4,ref:'Se positionner dans un travail partenarial.',
+ obj:'Formuler des propositions professionnelles réalistes à trois niveaux.',
+ how:['Au moins une proposition intra-institutionnelle','Au moins une proposition inter-institutionnelle','Au moins une proposition extra-institutionnelle','Chaque proposition répond à un enjeu (Q1) ou lève une limite (Q2)','Rester dans le champ de compétences de l\'EJE'],
+ warn:'Des propositions irréalistes ou qui dépassent le rôle de l\'EJE.',tip:'Voir la section « Intra · Inter · Extra ».'},
+{t:'Utiliser l\'outil QQOQCP',c:1,ref:'Méthodologie de projet.',
+ obj:'Structurer chaque proposition : Qui ? Quoi ? Où ? Quand ? Comment ? Pourquoi ? (Combien ?)',
+ how:['Qui : moi, l\'équipe, les partenaires nommés','Quoi : l\'action précise','Où et Quand : lieu, fréquence, échéance','Comment : outils, supports, étapes','Pourquoi : l\'enjeu visé et l\'évaluation prévue'],
+ warn:'Oublier le « Comment » : c\'est lui qui rend la pratique visible.',tip:'Essayez le générateur QQOQCP plus bas.'},
+{t:'Rédiger la Q3 : intro, corpus, conclusion',c:4,ref:'Rendre compte de sa pratique professionnelle.',
+ obj:'Écrire une Q3 complète : introduction, corps de propositions détaillées, conclusion, en se rendant visible.',
+ how:['Introduction : rappel de ma place d\'EJE et de mes valeurs professionnelles','Corps : propositions argumentées, une par paragraphe','Écrire « je », décrire concrètement mes gestes professionnels','Nommer outils, partenaires, temporalité, évaluation','Conclusion : bilan, limites, ouverture'],
+ warn:'« Il faudrait », « on pourrait » : l\'EJE disparaît de sa propre copie.',tip:'Voir la section « Se rendre visible ».'}];
+
+let done=store.get('dc4done',{}),cur=0;
+const total=S.reduce((a,s)=>a+s.how.length,0);
+function prog(){let n=0;for(const k in done)if(done[k])n++;const p=Math.round(n/total*100);gbar.style.width=p+'%';gtxt.textContent=p+' % des critères validés ('+n+'/'+total+')';
+ document.querySelectorAll('.steps button').forEach((b,i)=>b.classList.toggle('done',S[i].how.every((_,j)=>done[i+'-'+j])))}
+function tabs(){steps.innerHTML=S.map((s,i)=>`<button role="tab" id="tab${i}" aria-selected="${i===cur}" style="${i===cur?'':'border-top:6px solid '+C[s.c]}"><b>${i+1}</b>${s.t}</button>`).join('');
+ steps.querySelectorAll('button').forEach((b,i)=>b.onclick=()=>{cur=i;tabs();show()})}
+function show(){const s=S[cur];panel.innerHTML=`<div><span class="tag" style="background:${C[s.c]}">Critère ${cur+1}</span><h3 style="font-size:28px">${s.t}</h3><p>${s.obj}</p><div class="check">${s.how.map((h,j)=>`<label><input type="checkbox" data-k="${cur}-${j}" ${done[cur+'-'+j]?'checked':''}> <span>${h}</span></label>`).join('')}</div></div>
+<div><div class="box ref"><b>Référentiel / repère</b><br>${s.ref}</div><div class="box warn"><b>Piège</b><br>${s.warn}</div><div class="box tip"><b>Astuce</b><br>${s.tip}</div>
+<p style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn alt" id="prev" ${cur?'':'disabled'}>Précédent</button><button class="btn" id="next" ${cur<S.length-1?'':'disabled'}>Suivant</button></p></div>`;
+ panel.querySelectorAll('input').forEach(c=>c.onchange=()=>{done[c.dataset.k]=c.checked;store.set('dc4done',done);prog()});
+ prev.onclick=()=>{cur--;tabs();show()};next.onclick=()=>{cur++;tabs();show()}}
+tabs();show();prog();
+reset.onclick=()=>{done={};store.set('dc4done',done);show();prog()};
+
+const Q=[['qui','Qui ?','Moi, EJE, avec… (partenaires nommés)'],['quoi','Quoi ?','L\'action précise'],['ou','Où ?','Lieu'],['quand','Quand ?','Échéance, fréquence, durée'],['comment','Comment ?','Outils, supports, étapes'],['pourquoi','Pourquoi ?','Enjeu visé, limite levée'],['combien','Combien ? (moyens, évaluation)','Moyens, indicateurs d\'évaluation']];
+let qv=store.get('dc4qq',{});
+qq.innerHTML=Q.map(q=>`<div><label for="q_${q[0]}">${q[1]}</label><textarea id="q_${q[0]}" placeholder="${q[2]}"></textarea></div>`).join('');
+Q.forEach(q=>{const t=document.getElementById('q_'+q[0]);t.value=qv[q[0]]||'';t.oninput=()=>{qv[q[0]]=t.value;store.set('dc4qq',qv)}});
+const v=k=>document.getElementById('q_'+k).value.trim();
+gen.onclick=()=>{const miss=Q.filter(q=>!v(q[0])).map(q=>q[1]);
+ let s=`Au niveau ${niv.value}, ${v('qui')||'[qui ?]'}, je propose ${v('quoi')||'[quoi ?]'}. Cette action se déroule ${v('ou')||'[où ?]'}, ${v('quand')||'[quand ?]'}. Concrètement, ${v('comment')||'[comment ?]'}. Cette proposition répond à l'enjeu suivant : ${v('pourquoi')||'[pourquoi ?]'}. Pour l'évaluer, ${v('combien')||'[moyens et indicateurs ?]'}.`;
+ if(miss.length)s+=`\n\nÀ compléter : ${miss.join(', ')}`;out.textContent=s};
+ex.onclick=()=>{const e={qui:'en tant qu\'EJE référente du groupe des moyens, en lien avec la directrice et l\'enseignante de petite section de l\'école voisine',quoi:'une passerelle crèche-école pour les enfants qui feront leur rentrée en septembre',ou:'à la crèche puis dans la classe de petite section',quand:'de mars à juin, une matinée par mois',comment:'je co-construis le calendrier avec l\'enseignante, je prépare un livret photo avec les enfants, j\'organise une réunion d\'information avec les familles et je rédige un court compte rendu après chaque visite',pourquoi:'sécuriser la transition vers l\'école et soutenir les parents dans ce changement',combien:'je m\'appuie sur une grille d\'observation des enfants et un retour écrit des familles et de l\'enseignante en juin'};
+ niv.value='inter-institutionnel';for(const k in e){document.getElementById('q_'+k).value=e[k];qv[k]=e[k]}store.set('dc4qq',qv);gen.onclick()};
+cp.onclick=async()=>{try{await navigator.clipboard.writeText(out.textContent);cp.textContent='Copié'}catch(e){cp.textContent='Sélectionnez le texte'}setTimeout(()=>cp.textContent='Copier',1500)};
+clr.onclick=()=>{Q.forEach(q=>document.getElementById('q_'+q[0]).value='');qv={};store.set('dc4qq',qv);out.textContent='Le paragraphe apparaîtra ici.'};
+}
+</script>
+</body>
+</html>

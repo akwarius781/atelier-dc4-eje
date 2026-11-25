@@ -1,0 +1,35 @@
+ATELIER DC4 – METTRE L'APPLICATION À DISPOSITION DES ÉTUDIANTS
+==============================================================
+
+SOLUTION 1 – Diffuser depuis votre Mac sur le Wi-Fi de la salle
+---------------------------------------------------------------
+1. Copiez le dossier « Atelier_DC4 » sur votre Bureau.
+2. Clic droit sur « Lancer_atelier.command » > Ouvrir > Ouvrir.
+   (La première fois, macOS demande une confirmation : c'est normal.)
+   Si macOS bloque encore : Réglages Système > Confidentialité et sécurité
+   > « Ouvrir quand même ».
+3. Si macOS demande d'« accepter les connexions entrantes » : cliquez Autoriser.
+4. Le Terminal affiche une adresse du type  http://192.168.1.25:8080
+   Écrivez-la au tableau (ou dans Wooclap) : les étudiants la tapent dans
+   leur navigateur (ordinateur, tablette ou téléphone).
+5. Laissez la fenêtre du Terminal ouverte pendant tout l'atelier.
+
+Méthode manuelle (Terminal) si le lanceur ne s'ouvre pas :
+   cd ~/Desktop/Atelier_DC4
+   python3 -m http.server 8080 --bind 0.0.0.0
+   puis, dans un autre onglet :  ipconfig getifaddr en0   (donne l'adresse IP)
+
+Si les étudiants n'arrivent pas à se connecter :
+- Vérifiez qu'ils sont sur le MÊME réseau Wi-Fi que le Mac.
+- Certains Wi-Fi d'établissement isolent les appareils entre eux.
+  Dans ce cas, activez le partage de connexion de votre téléphone,
+  connectez le Mac ET les étudiants dessus, puis relancez le lanceur.
+
+SOLUTION 2 – Sans réseau : distribuer le fichier
+------------------------------------------------
+Le fichier « index.html » fonctionne seul, sans internet.
+Déposez-le sur l'ENT / Moodle, envoyez-le par mail ou AirDrop, ou copiez-le
+sur clé USB. Chaque étudiant l'ouvre par double-clic dans son navigateur.
+Toutes les fonctions restent interactives (cases à cocher, progression,
+générateur QQOQCP). La progression est enregistrée dans le navigateur
+de chaque étudiant.
